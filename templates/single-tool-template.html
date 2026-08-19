@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{TOOL_TITLE}} - 100% Free & Private Online Tool</title>
+  <meta name="description" content="{{TOOL_DESCRIPTION}}">
+  
+  <!-- OpenGraph / Social SEO -->
+  <meta property="og:title" content="{{TOOL_TITLE}}">
+  <meta property="og:description" content="{{TOOL_DESCRIPTION}}">
+  <meta property="og:type" content="website">
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+  <!-- Core Clean Aesthetic CSS (Modern, Premium, Zero-Cliché) -->
+  <style>
+    :root {
+      --bg-primary: #0a0c10;
+      --bg-surface: #14171f;
+      --bg-surface-elevated: #1c212c;
+      --border-subtle: rgba(255, 255, 255, 0.08);
+      --border-focus: #3b82f6;
+      --text-primary: #f8fafc;
+      --text-secondary: #94a3b8;
+      --text-muted: #64748b;
+      --accent: #2563eb;
+      --accent-hover: #1d4ed8;
+      --accent-glow: rgba(37, 99, 235, 0.2);
+      --promo-badge-bg: rgba(16, 185, 129, 0.15);
+      --promo-badge-text: #34d399;
+      --radius-sm: 8px;
+      --radius-md: 14px;
+      --radius-lg: 20px;
+      --font-main: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: var(--font-main);
+      background-color: var(--bg-primary);
+      color: var(--text-primary);
+      line-height: 1.6;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Header Nav */
+    header {
+      border-bottom: 1px solid var(--border-subtle);
+      background: rgba(10, 12, 16, 0.8);
+      backdrop-filter: blur(12px);
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+
+    .nav-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 16px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .brand-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      color: var(--text-primary);
+      font-weight: 700;
+      font-size: 1.15rem;
+      letter-spacing: -0.02em;
+    }
+
+    .brand-icon {
+      width: 28px;
+      height: 28px;
+      background: var(--accent);
+      border-radius: var(--radius-sm);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-weight: 800;
+      font-size: 0.9rem;
+    }
+
+    .nav-promo-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--bg-surface-elevated);
+      border: 1px solid var(--border-subtle);
+      padding: 6px 14px;
+      border-radius: 9999px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      text-decoration: none;
+      transition: all 0.2s ease;
+    }
+
+    .nav-promo-pill:hover {
+      border-color: var(--accent);
+      background: var(--bg-surface);
+      transform: translateY(-1px);
+    }
+
+    /* Main Content Layout */
+    main {
+      flex: 1;
+      max-width: 1200px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 40px 24px 60px;
+    }
+
+    .tool-hero {
+      text-align: center;
+      max-width: 720px;
+      margin: 0 auto 36px;
+    }
+
+    .tool-tag {
+      display: inline-block;
+      font-size: 0.8rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--accent);
+      margin-bottom: 12px;
+    }
+
+    h1 {
+      font-size: 2.5rem;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      line-height: 1.2;
+      margin-bottom: 16px;
+    }
+
+    .tool-subtitle {
+      color: var(--text-secondary);
+      font-size: 1.1rem;
+    }
+
+    /* Tool Interactive Sandbox Container */
+    .tool-workspace {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-lg);
+      padding: 32px;
+      margin-bottom: 48px;
+      box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.5);
+    }
+
+    /* Native Promotion Card Section (Strategic Ad Slot) */
+    .promo-section {
+      margin-top: 48px;
+      background: linear-gradient(180deg, var(--bg-surface) 0%, var(--bg-surface-elevated) 100%);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-lg);
+      padding: 32px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 32px;
+      align-items: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    @media (max-width: 860px) {
+      .promo-section {
+        grid-template-columns: 1fr;
+      }
+      h1 { font-size: 2rem; }
+      .tool-workspace { padding: 20px; }
+    }
+
+    .promo-badge {
+      display: inline-block;
+      background: var(--promo-badge-bg);
+      color: var(--promo-badge-text);
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 9999px;
+      margin-bottom: 12px;
+      letter-spacing: 0.05em;
+    }
+
+    .promo-title {
+      font-size: 1.5rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      margin-bottom: 10px;
+    }
+
+    .promo-desc {
+      color: var(--text-secondary);
+      font-size: 0.95rem;
+      margin-bottom: 20px;
+    }
+
+    .promo-cta-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--accent);
+      color: #fff;
+      padding: 12px 24px;
+      border-radius: var(--radius-sm);
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 0.95rem;
+      transition: all 0.2s ease;
+    }
+
+    .promo-cta-btn:hover {
+      background: var(--accent-hover);
+      box-shadow: 0 4px 15px var(--accent-glow);
+    }
+
+    .promo-preview-box {
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      border: 1px solid var(--border-subtle);
+      background: #000;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+    }
+
+    .promo-preview-box img {
+      width: 100%;
+      height: auto;
+      display: block;
+      transition: transform 0.3s ease;
+    }
+
+    .promo-preview-box:hover img {
+      transform: scale(1.02);
+    }
+
+    /* SEO & FAQ Section */
+    .seo-section {
+      margin-top: 48px;
+      max-width: 800px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .seo-section h2 {
+      font-size: 1.6rem;
+      font-weight: 700;
+      margin-bottom: 20px;
+      letter-spacing: -0.02em;
+    }
+
+    .faq-item {
+      border-bottom: 1px solid var(--border-subtle);
+      padding: 16px 0;
+    }
+
+    .faq-item h3 {
+      font-size: 1.05rem;
+      font-weight: 600;
+      margin-bottom: 8px;
+      color: var(--text-primary);
+    }
+
+    .faq-item p {
+      color: var(--text-secondary);
+      font-size: 0.95rem;
+    }
+
+    /* Global Footer */
+    footer {
+      border-top: 1px solid var(--border-subtle);
+      padding: 32px 24px;
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 0.85rem;
+    }
+
+    /* Buttons & Utilities */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      font-weight: 600;
+      font-size: 0.95rem;
+      padding: 10px 20px;
+      border-radius: var(--radius-sm);
+      border: none;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      font-family: inherit;
+    }
+
+    .btn-primary {
+      background: var(--accent);
+      color: white;
+    }
+    .btn-primary:hover { background: var(--accent-hover); }
+
+    .btn-secondary {
+      background: var(--bg-surface-elevated);
+      color: var(--text-primary);
+      border: 1px solid var(--border-subtle);
+    }
+    .btn-secondary:hover { background: rgba(255,255,255,0.06); }
+  </style>
+
+  <!-- Dynamic Tool Specific Stylesheet Slot -->
+  {{TOOL_CUSTOM_CSS}}
+</head>
+<body>
+
+  <!-- Top Header Navigation with Featured Cross-Promo -->
+  <header>
+    <div class="nav-container">
+      <a href="#" class="brand-logo">
+        <div class="brand-icon">{{TOOL_ICON_CHAR}}</div>
+        <span>{{TOOL_SHORT_NAME}}</span>
+      </a>
+      <a href="{{MAIN_PROMO_URL}}" target="_blank" rel="noopener" class="nav-promo-pill" id="headerPromoPill">
+        <span>⚡ {{MAIN_PROMO_NAME}}</span>
+        <span style="color: var(--accent);">→</span>
+      </a>
+    </div>
+  </header>
+
+  <!-- Main Workspace -->
+  <main>
+    <!-- Tool Hero Banner -->
+    <div class="tool-hero">
+      <span class="tool-tag">{{TOOL_CATEGORY}}</span>
+      <h1>{{TOOL_TITLE}}</h1>
+      <p class="tool-subtitle">{{TOOL_SUBTITLE}}</p>
+    </div>
+
+    <!-- Active Tool Interactive Sandbox Slot -->
+    <section class="tool-workspace" id="toolRoot">
+      {{TOOL_WORKSPACE_HTML}}
+    </section>
+
+    <!-- Strategic Ad / Native Promotion Showcase (Promoting your main project) -->
+    <section class="promo-section" id="featuredPromoBox">
+      <div class="promo-content">
+        <span class="promo-badge">{{MAIN_PROMO_BADGE}}</span>
+        <h2 class="promo-title">{{MAIN_PROMO_NAME}}</h2>
+        <p class="promo-desc">{{MAIN_PROMO_DESCRIPTION}}</p>
+        <a href="{{MAIN_PROMO_URL}}" target="_blank" rel="noopener" class="promo-cta-btn" id="promoCtaBtn">
+          {{MAIN_PROMO_CTA}}
+        </a>
+      </div>
+      <div class="promo-preview-box">
+        <a href="{{MAIN_PROMO_URL}}" target="_blank" rel="noopener">
+          <img src="{{MAIN_PROMO_SCREENSHOT}}" alt="{{MAIN_PROMO_NAME}} Screenshot Preview">
+        </a>
+      </div>
+    </section>
+
+    <!-- SEO & FAQ Section -->
+    <section class="seo-section">
+      <h2>Frequently Asked Questions</h2>
+      <div class="faq-item">
+        <h3>Is this tool completely free to use?</h3>
+        <p>Yes, this tool is 100% free with no registration required. All processing happens securely in your browser.</p>
+      </div>
+      <div class="faq-item">
+        <h3>Is my data private and secure?</h3>
+        <p>Absolutely. Your files and data are processed locally on your device and are never uploaded to any remote server.</p>
+      </div>
+      {{TOOL_EXTRA_FAQ}}
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <p>© 2026 MicroTool Studio · Powered by Client-Side Edge Technologies · <a href="{{MAIN_PROMO_URL}}" style="color: var(--text-secondary); text-decoration: none;">Discover More Tools</a></p>
+  </footer>
+
+  <!-- Dynamic Tool Specific Scripts Slot -->
+  {{TOOL_CUSTOM_JS}}
+</body>
+</html>

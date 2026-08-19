@@ -1,0 +1,24 @@
+{
+  "promotions": [
+    {
+      "id": "promo-main-project-1",
+      "name": "SuperApp AI - 你的全能创意工作流",
+      "tagline": "⚡ 一键批量处理图片与视频，提升 10 倍效率",
+      "description": "喜欢这个小工具吗？我们的主力产品 SuperApp 支持批量去背、智能超分辨率与 AI 视频动作迁移，立即免费试用！",
+      "ctaText": "探索 SuperApp AI 🚀",
+      "targetUrl": "https://your-main-project.com/?ref=microtool",
+      "badge": "主力推荐",
+      "screenshotUrl": "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=600&auto=format&fit=crop&q=80"
+    },
+    {
+      "id": "promo-main-project-2",
+      "name": "DesignKit Pro - 专为创作者打造的设计神器",
+      "tagline": "🎨 包含 500+ 精选字体、排版预设与动画模板",
+      "description": "无需繁琐操作，直接套用专业设计师调优的排版与字距方案，让你的作品瞬间脱颖而出。",
+      "ctaText": "免费获取模板包 ✨",
+      "targetUrl": "https://your-second-project.com/?ref=microtool",
+      "badge": "热门产品",
+      "screenshotUrl": "https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?w=600&auto=format&fit=crop&q=80"
+    }
+  ]
+}

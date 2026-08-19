@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PDF to Markdown Converter — Free, Private, 100% Client-Side</title>
+  <meta name="description" content="Convert PDF to Markdown instantly in your browser. Free and private — no upload, no signup. Extract text from PDF and download as .md in seconds.">
+  <meta name="keywords" content="pdf to markdown, pdf to md, extract text from pdf, pdf converter, markdown converter, free pdf converter">
+
+  <meta property="og:title" content="PDF to Markdown Converter — Free & Private">
+  <meta property="og:description" content="Convert PDF to Markdown in your browser. 100% client-side, no upload.">
+  <meta property="og:type" content="website">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "PDF to Markdown Converter",
+    "applicationCategory": "UtilitiesApplication",
+    "operatingSystem": "Any",
+    "description": "Free client-side PDF to Markdown converter that runs entirely in the browser.",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "Is this PDF to Markdown converter free?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Yes, it is 100% free with no registration or usage limits. Processing happens locally in your browser." }
+      },
+      {
+        "@type": "Question",
+        "name": "Are my PDF files uploaded to a server?",
+        "acceptedAnswer": { "@type": "Answer", "text": "No. Your PDF is parsed locally using pdf.js. It never leaves your device." }
+      },
+      {
+        "@type": "Question",
+        "name": "Does it work with scanned PDFs?",
+        "acceptedAnswer": { "@type": "Answer", "text": "It extracts the embedded text layer of digital PDFs. Scanned/image-only PDFs without a text layer are not supported." }
+      }
+    ]
+  }
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+  <!-- Mozilla pdf.js (client-side PDF parsing) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+
+  <style>
+    :root {
+      --bg-primary: #0a0c10;
+      --bg-surface: #14171f;
+      --bg-surface-elevated: #1c212c;
+      --border-subtle: rgba(255, 255, 255, 0.08);
+      --text-primary: #f8fafc;
+      --text-secondary: #94a3b8;
+      --text-muted: #64748b;
+      --accent: #2563eb;
+      --accent-hover: #1d4ed8;
+      --accent-glow: rgba(37, 99, 235, 0.25);
+      --promo-badge-bg: rgba(16, 185, 129, 0.15);
+      --promo-badge-text: #34d399;
+      --radius-sm: 8px;
+      --radius-md: 14px;
+      --radius-lg: 20px;
+      --font-main: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--font-main);
+      background-color: var(--bg-primary);
+      background-image: radial-gradient(circle at 15% -10%, rgba(37, 99, 235, 0.12), transparent 45%),
+                        radial-gradient(circle at 85% 0%, rgba(16, 185, 129, 0.06), transparent 40%);
+      color: var(--text-primary);
+      line-height: 1.6;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    header {
+      border-bottom: 1px solid var(--border-subtle);
+      background: rgba(10, 12, 16, 0.75);
+      backdrop-filter: blur(14px);
+      position: sticky; top: 0; z-index: 50;
+    }
+    .nav-container {
+      max-width: 1150px; margin: 0 auto; padding: 14px 24px;
+      display: flex; align-items: center; justify-content: space-between; gap: 12px;
+    }
+    .brand-logo {
+      display: flex; align-items: center; gap: 10px;
+      text-decoration: none; color: var(--text-primary);
+      font-weight: 800; font-size: 1.05rem; letter-spacing: -0.02em;
+    }
+    .brand-icon {
+      width: 32px; height: 32px;
+      background: linear-gradient(135deg, #3b82f6, #6366f1);
+      border-radius: var(--radius-sm);
+      display: flex; align-items: center; justify-content: center;
+      color: #fff; font-weight: 800; font-size: 1rem;
+      box-shadow: 0 4px 12px rgba(59, 130, 246, 0.35);
+    }
+    .nav-promo-pill {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: var(--bg-surface-elevated); border: 1px solid var(--border-subtle);
+      padding: 7px 15px; border-radius: 9999px; font-size: 0.84rem; font-weight: 600;
+      color: var(--text-primary); text-decoration: none; transition: all 0.2s ease; white-space: nowrap;
+    }
+    .nav-promo-pill:hover { border-color: var(--accent); background: var(--bg-surface); transform: translateY(-1px); }
+
+    main { flex: 1; max-width: 1150px; width: 100%; margin: 0 auto; padding: 44px 24px 64px; }
+
+    .tool-hero { text-align: center; max-width: 720px; margin: 0 auto 36px; }
+    .tool-tag {
+      font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em;
+      color: #60a5fa; background: rgba(96, 165, 250, 0.1); border: 1px solid rgba(96, 165, 250, 0.18);
+      padding: 5px 12px; border-radius: 9999px; display: inline-block; margin-bottom: 16px;
+    }
+    h1 { font-size: 2.6rem; font-weight: 800; letter-spacing: -0.03em; line-height: 1.15; margin-bottom: 14px; }
+    .tool-subtitle { color: var(--text-secondary); font-size: 1.08rem; max-width: 560px; margin: 0 auto; }
+
+    .tool-workspace {
+      background: var(--bg-surface); border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-lg); padding: 30px; margin-bottom: 44px;
+      box-shadow: 0 24px 50px -18px rgba(0, 0, 0, 0.65);
+    }
+
+    .upload-zone {
+      border: 2px dashed rgba(255,255,255,0.12); border-radius: var(--radius-md);
+      padding: 56px 24px; text-align: center; cursor: pointer;
+      transition: all 0.25s ease; background: rgba(255,255,255,0.01);
+    }
+    .upload-zone:hover, .upload-zone.dragover { border-color: var(--accent); background: rgba(37, 99, 235, 0.05); }
+    .upload-icon {
+      font-size: 2.9rem; margin-bottom: 12px; display: inline-flex; width: 76px; height: 76px;
+      align-items: center; justify-content: center; background: var(--bg-surface-elevated); border-radius: 18px;
+    }
+
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+      font-weight: 600; font-size: 0.95rem; padding: 11px 22px; border-radius: var(--radius-sm);
+      border: none; cursor: pointer; transition: all 0.2s ease; font-family: inherit; text-decoration: none;
+    }
+    .btn:disabled { opacity: 0.55; cursor: not-allowed; }
+    .btn-primary { background: var(--accent); color: white; box-shadow: 0 6px 16px -6px rgba(37,99,235,0.6); }
+    .btn-primary:hover:not(:disabled) { background: var(--accent-hover); transform: translateY(-1px); }
+    .btn-secondary { background: var(--bg-surface-elevated); color: var(--text-primary); border: 1px solid var(--border-subtle); }
+    .btn-secondary:hover:not(:disabled) { background: rgba(255,255,255,0.06); }
+
+    .status-box {
+      margin-top: 20px; text-align: center; font-size: 0.95rem; color: #60a5fa;
+      display: none; align-items: center; justify-content: center; gap: 10px;
+    }
+    .spinner {
+      width: 18px; height: 18px; border: 2px solid rgba(96,165,250,0.25);
+      border-top-color: #60a5fa; border-radius: 50%; animation: spin 0.8s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .result-container { display: none; margin-top: 24px; }
+    .meta-row {
+      display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 16px;
+      font-size: 0.84rem; color: var(--text-secondary);
+    }
+    .meta-chip {
+      background: var(--bg-surface-elevated); border: 1px solid var(--border-subtle);
+      padding: 5px 12px; border-radius: 999px; font-weight: 600; color: var(--text-primary);
+    }
+    .preview-box {
+      background: #0b0e14; border: 1px solid var(--border-subtle); border-radius: var(--radius-md);
+      max-height: 460px; overflow: auto; padding: 20px; margin-bottom: 20px;
+    }
+    .preview-box pre {
+      font-family: var(--font-mono); font-size: 0.86rem; color: #cbd5e1;
+      white-space: pre-wrap; word-break: break-word; line-height: 1.7;
+    }
+    .action-bar { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
+
+    .promo-section {
+      background: linear-gradient(180deg, var(--bg-surface) 0%, var(--bg-surface-elevated) 100%);
+      border: 1px solid var(--border-subtle); border-radius: var(--radius-lg);
+      padding: 32px; display: grid; grid-template-columns: 1.2fr 1fr; gap: 32px; align-items: center;
+      margin-top: 48px; position: relative; overflow: hidden;
+    }
+    .promo-section::before {
+      content: ''; position: absolute; top: -60px; right: -60px; width: 220px; height: 220px;
+      background: radial-gradient(circle, rgba(37,99,235,0.25), transparent 70%); pointer-events: none;
+    }
+    @media (max-width: 860px) { .promo-section { grid-template-columns: 1fr; } }
+    .promo-badge {
+      display: inline-block; background: var(--promo-badge-bg); color: var(--promo-badge-text);
+      font-size: 0.75rem; font-weight: 700; padding: 4px 12px; border-radius: 9999px; margin-bottom: 12px; letter-spacing: 0.04em;
+    }
+    .promo-title { font-size: 1.55rem; font-weight: 800; letter-spacing: -0.02em; margin-bottom: 10px; }
+    .promo-desc { color: var(--text-secondary); font-size: 0.96rem; margin-bottom: 20px; }
+    .promo-preview-box {
+      border-radius: var(--radius-md); overflow: hidden; border: 1px solid var(--border-subtle);
+      box-shadow: 0 12px 30px rgba(0,0,0,0.5);
+    }
+    .promo-preview-box img { width: 100%; height: auto; display: block; transition: transform 0.35s ease; }
+    .promo-preview-box:hover img { transform: scale(1.03); }
+
+    .seo-section { max-width: 800px; margin: 48px auto 0; }
+    .seo-section h2 { font-size: 1.5rem; font-weight: 800; letter-spacing: -0.02em; margin-bottom: 20px; }
+    .faq-item { border-bottom: 1px solid var(--border-subtle); padding: 18px 0; }
+    .faq-item h3 { font-size: 1.02rem; font-weight: 600; margin-bottom: 7px; }
+    .faq-item p { color: var(--text-secondary); font-size: 0.93rem; }
+
+    footer {
+      border-top: 1px solid var(--border-subtle); padding: 26px 24px;
+      text-align: center; color: var(--text-muted); font-size: 0.85rem;
+    }
+    footer a { color: var(--text-secondary); text-decoration: none; }
+    footer a:hover { color: var(--text-primary); }
+
+    @media (max-width: 768px) {
+      h1 { font-size: 2rem; }
+      .tool-workspace { padding: 20px; }
+      .nav-promo-pill span:first-child { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="nav-container">
+      <a href="#" class="brand-logo">
+        <div class="brand-icon">📄</div>
+        <span>PDF→MD</span>
+      </a>
+      <a href="https://your-main-project.com/?ref=pdf2md-nav" target="_blank" rel="noopener" class="nav-promo-pill">
+        <span>⚡ SuperApp AI · 批量文件版</span>
+        <span style="color: var(--accent);">→</span>
+      </a>
+    </div>
+  </header>
+
+  <main>
+    <div class="tool-hero">
+      <span class="tool-tag">100% Free · Client-Side</span>
+      <h1>Convert PDF to Markdown</h1>
+      <p class="tool-subtitle">Extract clean Markdown from your PDF entirely in-browser. No upload, no signup — your document never leaves your device.</p>
+    </div>
+
+    <section class="tool-workspace">
+      <input type="file" id="fileInput" accept="application/pdf,.pdf" style="display:none;">
+
+      <div class="upload-zone" id="dropZone" onclick="document.getElementById('fileInput').click()">
+        <div class="upload-icon">📑</div>
+        <h3 style="margin-bottom: 8px; font-weight: 700;">Drop PDF here or click to browse</h3>
+        <p style="color: var(--text-muted); font-size: 0.9rem;">Text-based PDFs supported · Processed locally · No size limit</p>
+      </div>
+
+      <div class="status-box" id="statusBox">
+        <div class="spinner"></div>
+        <span id="statusText">Parsing PDF…</span>
+      </div>
+
+      <div class="result-container" id="resultContainer">
+        <div class="meta-row">
+          <span class="meta-chip" id="pageCountChip">0 pages</span>
+          <span class="meta-chip" id="wordCountChip">0 words</span>
+          <span class="meta-chip" id="charCountChip">0 chars</span>
+        </div>
+
+        <div class="preview-box">
+          <pre id="mdPreview"></pre>
+        </div>
+
+        <div class="action-bar">
+          <button class="btn btn-primary" id="copyBtn">📋 Copy Markdown</button>
+          <button class="btn btn-secondary" id="downloadBtn">⬇️ Download .md</button>
+          <button class="btn btn-secondary" onclick="resetTool()">🔄 New PDF</button>
+          <a href="https://your-main-project.com/?ref=pdf2md-result" target="_blank" rel="noopener" class="btn btn-secondary" style="border-color:#3b82f6; color:#60a5fa;">
+            🚀 Batch convert 100 PDFs? Try SuperApp
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <section class="promo-section">
+      <div class="promo-content">
+        <span class="promo-badge">主力推荐</span>
+        <h2 class="promo-title">SuperApp AI — 你的全能创意工作流</h2>
+        <p class="promo-desc">喜欢这个工具吗？我们的主力产品 SuperApp 支持批量处理图片与视频、智能超分辨率与 AI 视频动作迁移，提升 10 倍效率，立即免费试用！</p>
+        <a href="https://your-main-project.com/?ref=pdf2md-banner" target="_blank" rel="noopener" class="btn btn-primary">
+          探索 SuperApp AI 🚀
+        </a>
+      </div>
+      <div class="promo-preview-box">
+        <a href="https://your-main-project.com/?ref=pdf2md-banner-img" target="_blank" rel="noopener">
+          <img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=800&auto=format&fit=crop&q=80" alt="SuperApp AI Suite Preview" loading="lazy">
+        </a>
+      </div>
+    </section>
+
+    <section class="seo-section">
+      <h2>Frequently Asked Questions</h2>
+      <div class="faq-item">
+        <h3>Is this PDF to Markdown converter free?</h3>
+        <p>Yes, it is 100% free with no registration, no watermark and no usage limits. All processing happens locally in your browser using Mozilla's pdf.js.</p>
+      </div>
+      <div class="faq-item">
+        <h3>Are my PDF files uploaded to a server?</h3>
+        <p>Never. Your PDF is parsed on-device and never transmitted, stored or inspected by any remote server.</p>
+      </div>
+      <div class="faq-item">
+        <h3>Does it work with scanned PDFs?</h3>
+        <p>It extracts the embedded text layer of digital PDFs. Scanned or image-only PDFs without a text layer are not supported by this converter.</p>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>© 2026 PDF→MD · Free Tool as a Service · <a href="https://your-main-project.com" target="_blank" rel="noopener">Explore Our Main Products</a></p>
+  </footer>
+
+  <script>
+    (function () {
+      if (window.pdfjsLib) {
+        pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+      }
+
+      const fileInput = document.getElementById('fileInput');
+      const dropZone = document.getElementById('dropZone');
+      const statusBox = document.getElementById('statusBox');
+      const statusText = document.getElementById('statusText');
+      const resultContainer = document.getElementById('resultContainer');
+      const mdPreview = document.getElementById('mdPreview');
+      const pageCountChip = document.getElementById('pageCountChip');
+      const wordCountChip = document.getElementById('wordCountChip');
+      const charCountChip = document.getElementById('charCountChip');
+      const copyBtn = document.getElementById('copyBtn');
+      const downloadBtn = document.getElementById('downloadBtn');
+
+      let markdown = '';
+      let fileName = 'document';
+
+      ['dragenter', 'dragover'].forEach(n =>
+        dropZone.addEventListener(n, e => { e.preventDefault(); dropZone.classList.add('dragover'); }));
+      ['dragleave', 'drop'].forEach(n =>
+        dropZone.addEventListener(n, e => { e.preventDefault(); dropZone.classList.remove('dragover'); }));
+      dropZone.addEventListener('drop', e => {
+        if (e.dataTransfer.files.length) handleFile(e.dataTransfer.files[0]);
+      });
+      fileInput.addEventListener('change', e => {
+        if (e.target.files.length) handleFile(e.target.files[0]);
+      });
+
+      function setStatus(msg) { statusText.textContent = msg; statusBox.style.display = 'flex'; }
+      function clearStatus() { statusBox.style.display = 'none'; }
+
+      async function handleFile(file) {
+        if (!file || (file.type !== 'application/pdf' && !file.name.toLowerCase().endsWith('.pdf'))) {
+          alert('Please upload a valid PDF file.');
+          return;
+        }
+        if (!window.pdfjsLib) {
+          alert('PDF engine failed to load. Please check your internet connection and reload.');
+          return;
+        }
+
+        fileName = file.name.replace(/\.pdf$/i, '');
+        dropZone.style.display = 'none';
+        resultContainer.style.display = 'none';
+        setStatus('Loading PDF…');
+
+        try {
+          const buffer = await file.arrayBuffer();
+          const pdf = await pdfjsLib.getDocument({ data: buffer }).promise;
+
+          const mdParts = [];
+          const bodyFont = { sum: 0, count: 0, sizes: [] };
+          const pagesData = [];
+
+          for (let p = 1; p <= pdf.numPages; p++) {
+            setStatus(`Extracting page ${p} / ${pdf.numPages}…`);
+            const page = await pdf.getPage(p);
+            const content = await page.getTextContent();
+            const lines = buildLines(content.items);
+
+            lines.forEach(l => {
+              if (l.fontSize > 1) { bodyFont.sum += l.fontSize; bodyFont.count++; bodyFont.sizes.push(l.fontSize); }
+            });
+            pagesData.push(lines);
+          }
+
+          const avgSize = bodyFont.count ? bodyFont.sum / bodyFont.count : 12;
+
+          pagesData.forEach((lines, idx) => {
+            mdParts.push('');
+            mdParts.push(`## Page ${idx + 1}`);
+            mdParts.push('');
+            lines.forEach(line => {
+              mdParts.push(lineToMarkdown(line, avgSize));
+              mdParts.push('');
+            });
+          });
+
+          markdown = mdParts.join('\n').replace(/\n{3,}/g, '\n\n').trim();
+
+          mdPreview.textContent = markdown;
+          const words = markdown.trim().split(/\s+/).filter(Boolean).length;
+          pageCountChip.textContent = pdf.numPages + ' pages';
+          wordCountChip.textContent = words.toLocaleString() + ' words';
+          charCountChip.textContent = markdown.length.toLocaleString() + ' chars';
+
+          clearStatus();
+          resultContainer.style.display = 'block';
+        } catch (err) {
+          console.error(err);
+          clearStatus();
+          alert('Failed to parse this PDF. It may be encrypted, corrupted or image-only (scanned).');
+        }
+      }
+
+      function buildLines(items) {
+        const lines = [];
+        items.forEach(it => {
+          if (!it.str || !it.str.trim()) return;
+          const y = Math.round(it.transform[5]);
+          const size = Math.abs(it.transform[0]);
+          const x = it.transform[4];
+          let line = lines.find(l => Math.abs(l.y - y) < 3);
+          if (!line) {
+            line = { y, x, fontSize: size, text: '' };
+            lines.push(line);
+          }
+          line.text += it.str;
+          line.x = Math.min(line.x, x);
+          line.fontSize = Math.max(line.fontSize, size);
+        });
+        lines.sort((a, b) => b.y - a.y);
+        lines.forEach(l => { l.text = l.text.replace(/\s+/g, ' ').trim(); });
+        return lines.filter(l => l.text.length > 0);
+      }
+
+      function lineToMarkdown(line, avgSize) {
+        const text = line.text;
+        const t = text.trim();
+
+        if (line.fontSize > avgSize * 1.18) {
+          return '### ' + t.replace(/^[#*\-\d.)\s]+/, '');
+        }
+        if (/^(\d+[.)]|[-•*])\s/.test(t)) {
+          return '- ' + t.replace(/^(\d+[.)]|[-•*])\s+/, '');
+        }
+        if (/^[A-Z][A-Z0-9 ._-]{4,}$/.test(t) && t.length < 60 && line.fontSize > avgSize * 1.05) {
+          return '### ' + t;
+        }
+        return t;
+      }
+
+      copyBtn.addEventListener('click', async () => {
+        if (!markdown) return;
+        try {
+          await navigator.clipboard.writeText(markdown);
+          copyBtn.textContent = '✅ Copied!';
+          setTimeout(() => { copyBtn.innerHTML = '📋 Copy Markdown'; }, 1500);
+        } catch (e) {
+          const ta = document.createElement('textarea');
+          ta.value = markdown; document.body.appendChild(ta); ta.select();
+          document.execCommand('copy'); ta.remove();
+          copyBtn.textContent = '✅ Copied!';
+          setTimeout(() => { copyBtn.innerHTML = '📋 Copy Markdown'; }, 1500);
+        }
+      });
+
+      downloadBtn.addEventListener('click', () => {
+        if (!markdown) return;
+        const blob = new Blob([markdown], { type: 'text/markdown;charset=utf-8' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url; a.download = fileName + '.md';
+        document.body.appendChild(a); a.click(); a.remove();
+        URL.revokeObjectURL(url);
+      });
+
+      function resetTool() {
+        dropZone.style.display = 'block';
+        resultContainer.style.display = 'none';
+        clearStatus();
+        fileInput.value = '';
+        markdown = '';
+        mdPreview.textContent = '';
+      }
+      window.resetTool = resetTool;
+    })();
+  </script>
+</body>
+</html>

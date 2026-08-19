@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kerning Master - Interactive Typographic Kerning & Spacing Tool</title>
+  <meta name="description" content="Test, practice and optimize your typographic letter kerning in real-time. Free online typography spacing checker for designers.">
+  
+  <meta property="og:title" content="Kerning Master - Free Typography Tool">
+  <meta property="og:description" content="Test, practice and optimize font kerning directly in your browser.">
+  <meta property="og:type" content="website">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,700;1,700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg-primary: #0a0c10;
+      --bg-surface: #14171f;
+      --bg-surface-elevated: #1c212c;
+      --border-subtle: rgba(255, 255, 255, 0.08);
+      --text-primary: #f8fafc;
+      --text-secondary: #94a3b8;
+      --text-muted: #64748b;
+      --accent: #3b82f6;
+      --accent-hover: #2563eb;
+      --promo-badge-bg: rgba(236, 72, 153, 0.15);
+      --promo-badge-text: #f472b6;
+      --radius-sm: 8px;
+      --radius-md: 14px;
+      --radius-lg: 20px;
+      --font-main: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: var(--font-main);
+      background-color: var(--bg-primary);
+      color: var(--text-primary);
+      line-height: 1.6;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    header {
+      border-bottom: 1px solid var(--border-subtle);
+      background: rgba(10, 12, 16, 0.8);
+      backdrop-filter: blur(12px);
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+
+    .nav-container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 16px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .brand-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      color: var(--text-primary);
+      font-weight: 700;
+      font-size: 1.1rem;
+    }
+
+    .brand-icon {
+      width: 32px;
+      height: 32px;
+      background: var(--accent);
+      border-radius: var(--radius-sm);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-weight: 800;
+    }
+
+    .nav-promo-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--bg-surface-elevated);
+      border: 1px solid var(--border-subtle);
+      padding: 6px 14px;
+      border-radius: 9999px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      text-decoration: none;
+      transition: all 0.2s ease;
+    }
+    .nav-promo-pill:hover { border-color: var(--accent); transform: translateY(-1px); }
+
+    main {
+      flex: 1;
+      max-width: 1100px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 40px 24px 60px;
+    }
+
+    .tool-hero { text-align: center; max-width: 700px; margin: 0 auto 32px; }
+    .tool-tag {
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #38bdf8;
+      background: rgba(56, 189, 248, 0.1);
+      padding: 4px 10px;
+      border-radius: 9999px;
+      display: inline-block;
+      margin-bottom: 12px;
+    }
+
+    h1 { font-size: 2.3rem; font-weight: 800; letter-spacing: -0.03em; margin-bottom: 10px; }
+    .tool-subtitle { color: var(--text-secondary); font-size: 1.05rem; }
+
+    /* Kerning Stage Box */
+    .tool-workspace {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-lg);
+      padding: 36px 32px;
+      margin-bottom: 40px;
+      box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.6);
+      text-align: center;
+    }
+
+    .kerning-stage {
+      background: #000;
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      padding: 60px 20px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 5rem;
+      font-weight: 700;
+      user-select: none;
+      position: relative;
+      overflow: hidden;
+      margin-bottom: 24px;
+    }
+
+    .letter {
+      display: inline-block;
+      position: relative;
+      transition: transform 0.05s ease;
+    }
+
+    .letter.fixed {
+      color: #94a3b8;
+    }
+
+    .letter.movable {
+      color: #ffffff;
+      cursor: ew-resize;
+      background: rgba(59, 130, 246, 0.1);
+      border-radius: 4px;
+      padding: 0 4px;
+    }
+
+    .controls-panel {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 20px;
+      flex-wrap: wrap;
+      margin-top: 20px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      font-weight: 600;
+      font-size: 0.95rem;
+      padding: 10px 20px;
+      border-radius: var(--radius-sm);
+      border: none;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      font-family: inherit;
+      text-decoration: none;
+    }
+
+    .btn-primary { background: var(--accent); color: white; }
+    .btn-primary:hover { background: var(--accent-hover); }
+    .btn-secondary { background: var(--bg-surface-elevated); color: var(--text-primary); border: 1px solid var(--border-subtle); }
+    .btn-secondary:hover { background: rgba(255,255,255,0.06); }
+
+    .score-badge {
+      font-size: 1.25rem;
+      font-weight: 800;
+      padding: 8px 16px;
+      border-radius: var(--radius-sm);
+      background: var(--bg-surface-elevated);
+      border: 1px solid var(--border-subtle);
+      color: #34d399;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* Strategic Ad / Cross Promo */
+    .promo-section {
+      background: linear-gradient(180deg, var(--bg-surface) 0%, var(--bg-surface-elevated) 100%);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-lg);
+      padding: 32px;
+      display: grid;
+      grid-template-columns: 1.2fr 1fr;
+      gap: 32px;
+      align-items: center;
+      margin-top: 48px;
+    }
+
+    @media (max-width: 860px) {
+      .promo-section { grid-template-columns: 1fr; }
+      .kerning-stage { font-size: 3.5rem; }
+    }
+
+    .promo-badge {
+      display: inline-block;
+      background: var(--promo-badge-bg);
+      color: var(--promo-badge-text);
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 9999px;
+      margin-bottom: 12px;
+    }
+
+    .promo-title { font-size: 1.5rem; font-weight: 800; margin-bottom: 10px; }
+    .promo-desc { color: var(--text-secondary); font-size: 0.95rem; margin-bottom: 20px; }
+    .promo-preview-box {
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      border: 1px solid var(--border-subtle);
+      box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+    }
+    .promo-preview-box img { width: 100%; height: auto; display: block; }
+
+    /* FAQ */
+    .seo-section { max-width: 800px; margin: 48px auto 0; }
+    .seo-section h2 { font-size: 1.5rem; font-weight: 700; margin-bottom: 20px; }
+    .faq-item { border-bottom: 1px solid var(--border-subtle); padding: 16px 0; }
+    .faq-item h3 { font-size: 1rem; font-weight: 600; margin-bottom: 6px; }
+    .faq-item p { color: var(--text-secondary); font-size: 0.9rem; }
+
+    footer {
+      border-top: 1px solid var(--border-subtle);
+      padding: 24px;
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      margin-top: 40px;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="nav-container">
+      <a href="#" class="brand-logo">
+        <div class="brand-icon">AV</div>
+        <span>Kerning Master</span>
+      </a>
+      <a href="https://your-second-project.com/?ref=kerning-nav" target="_blank" rel="noopener" class="nav-promo-pill">
+        <span>🎨 DesignKit Pro 500+ 排版预设</span>
+        <span style="color: var(--accent);">→</span>
+      </a>
+    </div>
+  </header>
+
+  <main>
+    <div class="tool-hero">
+      <span class="tool-tag">Interactive Typography Test</span>
+      <h1>Master the Art of Font Kerning</h1>
+      <p class="tool-subtitle">Drag the middle characters or use your arrow keys to achieve visually balanced spacing.</p>
+    </div>
+
+    <!-- Tool Interactive Workspace -->
+    <section class="tool-workspace">
+      <div class="kerning-stage" id="stage">
+        <span class="letter fixed">W</span>
+        <span class="letter movable" id="movableLetter1" style="transform: translateX(35px);">A</span>
+        <span class="letter movable" id="movableLetter2" style="transform: translateX(15px);">V</span>
+        <span class="letter fixed">E</span>
+      </div>
+
+      <div class="controls-panel">
+        <button class="btn btn-secondary" onclick="moveLetter(-2)">◀ Move Left</button>
+        <button class="btn btn-secondary" onclick="moveLetter(2)">Move Right ▶</button>
+        <button class="btn btn-primary" onclick="calculateScore()">✨ Check My Kerning Score</button>
+        <button class="btn btn-secondary" onclick="nextWord()">Next Word ➔</button>
+      </div>
+
+      <div style="margin-top: 24px;" id="scoreOutput" style="display: none;">
+        <span class="score-badge" id="scoreValue">🎯 Score: -- / 100</span>
+      </div>
+    </section>
+
+    <!-- Strategic Ad / Native Promotion Showcase -->
+    <section class="promo-section">
+      <div class="promo-content">
+        <span class="promo-badge">设计神器推荐</span>
+        <h2 class="promo-title">DesignKit Pro - 高级字体与排版预设库</h2>
+        <p class="promo-desc">厌倦了每次手动微调字距和排版？DesignKit Pro 提供 500+ 款经过专业设计师光学对齐打磨的标题配字模板与动画库，一键粘贴到 Figma 或 Web 项目中！</p>
+        <a href="https://your-second-project.com/?ref=kerning-ad" target="_blank" rel="noopener" class="btn btn-primary">
+          免费获取 DesignKit 灵感包 ✨
+        </a>
+      </div>
+      <div class="promo-preview-box">
+        <a href="https://your-second-project.com/?ref=kerning-img" target="_blank" rel="noopener">
+          <img src="https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?w=800&auto=format&fit=crop&q=80" alt="DesignKit Pro Preview">
+        </a>
+      </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="seo-section">
+      <h2>Frequently Asked Questions</h2>
+      <div class="faq-item">
+        <h3>What is Kerning in typography?</h3>
+        <p>Kerning refers to the spacing between two specific characters, adjusted to create an even, harmonious visual appearance.</p>
+      </div>
+      <div class="faq-item">
+        <h3>Why is optical kerning important for branding?</h3>
+        <p>Mathematical spacing often leaves awkward gaps between letters with slants or serifs (like W, A, V, T). Proper optical kerning ensures professional logos and titles.</p>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>© 2026 Kerning Master · Powered by Modern Web Typography · <a href="https://your-second-project.com" style="color: var(--text-secondary); text-decoration: none;">Explore DesignKit Pro</a></p>
+  </footer>
+
+  <script>
+    let currentOffset1 = 35;
+    let currentOffset2 = 15;
+    const targetOffset1 = 0;
+    const targetOffset2 = 0;
+
+    const letter1 = document.getElementById('movableLetter1');
+    const letter2 = document.getElementById('movableLetter2');
+    const scoreOutput = document.getElementById('scoreOutput');
+    const scoreValue = document.getElementById('scoreValue');
+
+    function moveLetter(delta) {
+      currentOffset1 += delta;
+      letter1.style.transform = `translateX(${currentOffset1}px)`;
+    }
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowLeft') moveLetter(-2);
+      if (e.key === 'ArrowRight') moveLetter(2);
+    });
+
+    function calculateScore() {
+      const diff1 = Math.abs(currentOffset1 - targetOffset1);
+      const diff2 = Math.abs(currentOffset2 - targetOffset2);
+      const penalty = (diff1 + diff2) * 2;
+      const score = Math.max(0, Math.min(100, Math.round(100 - penalty)));
+
+      scoreOutput.style.display = 'block';
+      scoreValue.textContent = `🎯 Kerning Score: ${score} / 100`;
+
+      if (score >= 90) {
+        scoreValue.style.color = '#34d399';
+        scoreValue.textContent += ' (Exceptional Eye! 🔥)';
+      } else if (score >= 70) {
+        scoreValue.style.color = '#fbbf24';
+        scoreValue.textContent += ' (Good effort! 👍)';
+      } else {
+        scoreValue.style.color = '#f87171';
+        scoreValue.textContent += ' (Keep tuning!)';
+      }
+    }
+
+    function nextWord() {
+      alert('Well done! You can load more words or check out our DesignKit presets.');
+    }
+  </script>
+</body>
+</html>
