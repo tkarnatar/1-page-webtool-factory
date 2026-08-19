@@ -49,6 +49,16 @@
       "targetUrl": "https://sherlock-ai.app",
       "badge": "Game",
       "screenshotUrl": "/assets/screenshots/sherlock-ai.png"
+    },
+    {
+      "id": "decodegene",
+      "name": "DecodeGene",
+      "tagline": "🧬 Open-source gene-disease knowledge graph & AI health education platform",
+      "description": "Genetic test reports full of jargon leave you anxious and lost? DecodeGene turns authoritative gene-disease data into plain language — vivid metaphors, an interactive report decoder, inheritance simulator and prevention guides.",
+      "ctaText": "Explore DecodeGene 🧬",
+      "targetUrl": "https://github.com/tkarnatar/DecodeGene",
+      "badge": "Open Source",
+      "screenshotUrl": "/assets/screenshots/decodegene.png"
     }
   ]
 }
