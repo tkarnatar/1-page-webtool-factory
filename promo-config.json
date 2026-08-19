@@ -59,6 +59,16 @@
       "targetUrl": "https://github.com/tkarnatar/DecodeGene",
       "badge": "Open Source",
       "screenshotUrl": "/assets/screenshots/decodegene.png"
+    },
+    {
+      "id": "taiwan-bite-master",
+      "name": "TaiwanBite Master",
+      "tagline": "🍜 Taiwan night market street food recipes — official recipe companion",
+      "description": "Craving authentic Taiwan night market flavors but can't find reliable recipes? TaiwanBite Master is your official companion for classic street food, with easy step-by-step recipes from Taiwan Bites.",
+      "ctaText": "Explore Recipes 🍜",
+      "targetUrl": "https://taiwan-bite-master.vercel.app",
+      "badge": "Food",
+      "screenshotUrl": "/assets/screenshots/taiwan-bite-master.png"
     }
   ]
 }
