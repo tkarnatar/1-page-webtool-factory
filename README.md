@@ -13,9 +13,7 @@
 ├── 📁 templates/
 │   └── 📄 single-tool-template.html # 基础标准单页骨架 (带广告位与SEO)
 ├── 📁 tools/                    # 已经生成好的开箱即用范例工具
-│   ├── 📁 remove-bg/            # 范例 1: 纯前端 AI 抠图去背工具
-│   │   └── 📄 index.html
-│   └── 📁 kerning-tester/       # 范例 2: 交互式字体字距 (Kerning) 测验工具
+│   └── 📁 kerning-tester/       # 范例: 交互式字体字距 (Kerning) 测验工具
 │       └── 📄 index.html
 └── 📁 output/                   # 存放未来 AI 自动批量产出的新工具
 ```
