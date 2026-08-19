@@ -8,7 +8,7 @@
       "ctaText": "逛逛 Kuora Books 📚",
       "targetUrl": "https://kuorabooks.com",
       "badge": "創作必備",
-      "screenshotUrl": "https://images.unsplash.com/photo-1512820790803-83ca734da794?w=800&auto=format&fit=crop&q=80"
+      "screenshotUrl": "/assets/screenshots/kuora-books.png"
     },
     {
       "id": "clarity-clinical",
@@ -18,7 +18,7 @@
       "ctaText": "立即諮詢 🧬",
       "targetUrl": "https://clarityclinicalsolutions.com",
       "badge": "專業顧問",
-      "screenshotUrl": "https://images.unsplash.com/photo-1532187863486-abf9dbad1b69?w=800&auto=format&fit=crop&q=80"
+      "screenshotUrl": "/assets/screenshots/clarity-clinical.png"
     },
     {
       "id": "safeguard-usa",
@@ -28,7 +28,7 @@
       "ctaText": "查看生存指南 🛡️",
       "targetUrl": "https://safeguard-usa.vercel.app",
       "badge": "安全必備",
-      "screenshotUrl": "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?w=800&auto=format&fit=crop&q=80"
+      "screenshotUrl": "/assets/screenshots/safeguard-usa.png"
     },
     {
       "id": "stepone-career",
@@ -38,7 +38,7 @@
       "ctaText": "開始求職 🤖",
       "targetUrl": "https://steponecareer.com",
       "badge": "職涯加速",
-      "screenshotUrl": "https://images.unsplash.com/photo-1521737604893-d14cc237f11d?w=800&auto=format&fit=crop&q=80"
+      "screenshotUrl": "/assets/screenshots/stepone-career.png"
     },
     {
       "id": "sherlock-ai",
@@ -48,7 +48,7 @@
       "ctaText": "開始推理 🕵️",
       "targetUrl": "https://sherlock-ai.app",
       "badge": "趣味遊戲",
-      "screenshotUrl": "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=800&auto=format&fit=crop&q=80"
+      "screenshotUrl": "/assets/screenshots/sherlock-ai.png"
     }
   ]
 }
