@@ -1,24 +1,54 @@
 {
   "promotions": [
     {
-      "id": "promo-main-project-1",
-      "name": "SuperApp AI - 你的全能创意工作流",
-      "tagline": "⚡ 一键批量处理图片与视频，提升 10 倍效率",
-      "description": "喜欢这个小工具吗？我们的主力产品 SuperApp 支持批量去背、智能超分辨率与 AI 视频动作迁移，立即免费试用！",
-      "ctaText": "探索 SuperApp AI 🚀",
-      "targetUrl": "https://your-main-project.com/?ref=microtool",
-      "badge": "主力推荐",
-      "screenshotUrl": "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=600&auto=format&fit=crop&q=80"
+      "id": "kuora-books",
+      "name": "Kuora Books",
+      "tagline": "📚 可列印筆記本、數位手帳、電子書與繪本，下載即用",
+      "description": "別再花大錢買實體筆記本與手帳模板了。Kuora Books 提供高質感可列印筆記本、數位手帳、電子書與繪本，一次下載、無限次使用，創作者與學生都愛。",
+      "ctaText": "逛逛 Kuora Books 📚",
+      "targetUrl": "https://kuorabooks.com",
+      "badge": "創作必備",
+      "screenshotUrl": "https://images.unsplash.com/photo-1512820790803-83ca734da794?w=800&auto=format&fit=crop&q=80"
     },
     {
-      "id": "promo-main-project-2",
-      "name": "DesignKit Pro - 专为创作者打造的设计神器",
-      "tagline": "🎨 包含 500+ 精选字体、排版预设与动画模板",
-      "description": "无需繁琐操作，直接套用专业设计师调优的排版与字距方案，让你的作品瞬间脱颖而出。",
-      "ctaText": "免费获取模板包 ✨",
-      "targetUrl": "https://your-second-project.com/?ref=microtool",
-      "badge": "热门产品",
-      "screenshotUrl": "https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?w=600&auto=format&fit=crop&q=80"
+      "id": "clarity-clinical",
+      "name": "Clarity Clinical Solutions",
+      "tagline": "🧬 17+ 年臨床營運與開發顧問，Phase I 到 IV",
+      "description": "臨床試驗時程失控、預算超支、法規卡關？Clarity Clinical 以 17 年經驗、50+ 研究與 10+ 治療領域，助生技、藥廠與 CRO 精準推進臨床開發到法規申報。",
+      "ctaText": "立即諮詢 🧬",
+      "targetUrl": "https://clarityclinicalsolutions.com",
+      "badge": "專業顧問",
+      "screenshotUrl": "https://images.unsplash.com/photo-1532187863486-abf9dbad1b69?w=800&auto=format&fit=crop&q=80"
+    },
+    {
+      "id": "safeguard-usa",
+      "name": "SafeGuard USA",
+      "tagline": "🛡️ 全美與美西防災避難與生存準備中心",
+      "description": "災難來臨前，你準備好了嗎？SafeGuard USA 提供全美與美西防災避難指南、生存裝備與應急準備資源，一次到位守護你與家人的安全。",
+      "ctaText": "查看生存指南 🛡️",
+      "targetUrl": "https://safeguard-usa.vercel.app",
+      "badge": "安全必備",
+      "screenshotUrl": "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?w=800&auto=format&fit=crop&q=80"
+    },
+    {
+      "id": "stepone-career",
+      "name": "StepOne Career",
+      "tagline": "🤖 AI 求職夥伴，助你拿下美國工作機會",
+      "description": "履歷石沉大海、面試沒下文？StepOne Career 的 AI 求職助手幫你優化履歷、模擬面試、精準投遞，專為美國求職市場打造。",
+      "ctaText": "開始求職 🤖",
+      "targetUrl": "https://steponecareer.com",
+      "badge": "職涯加速",
+      "screenshotUrl": "https://images.unsplash.com/photo-1521737604893-d14cc237f11d?w=800&auto=format&fit=crop&q=80"
+    },
+    {
+      "id": "sherlock-ai",
+      "name": "SherlockAI",
+      "tagline": "🕵️ 免費推理遊戲，讓 AI 猜出你心中的角色與職業",
+      "description": "想玩免費又燒腦的推理遊戲？SherlockAI 用一連串線索問題，在瀏覽器裡推理出你心中的角色或職業，600+ 角色、152 種職業，零註冊、隱私全保留。",
+      "ctaText": "開始推理 🕵️",
+      "targetUrl": "https://sherlock-ai.app",
+      "badge": "趣味遊戲",
+      "screenshotUrl": "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=800&auto=format&fit=crop&q=80"
     }
   ]
 }
