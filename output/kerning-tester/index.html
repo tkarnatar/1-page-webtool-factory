@@ -289,17 +289,12 @@
     <div class="tool-hero">
       <span class="tool-tag">Interactive Typography Test</span>
       <h1>Master the Art of Font Kerning</h1>
-      <p class="tool-subtitle">Drag the middle characters or use your arrow keys to achieve visually balanced spacing.</p>
+      <p class="tool-subtitle">Each word has one letter that needs kerning. Drag it, use the arrow keys (hold Shift for fine-tune), or the Move buttons to balance the spacing — then check your score. Hit Next Word for a new challenge.</p>
     </div>
 
     <!-- Tool Interactive Workspace -->
     <section class="tool-workspace">
-      <div class="kerning-stage" id="stage">
-        <span class="letter fixed">W</span>
-        <span class="letter movable" id="movableLetter1" style="transform: translateX(35px);">A</span>
-        <span class="letter movable" id="movableLetter2" style="transform: translateX(15px);">V</span>
-        <span class="letter fixed">E</span>
-      </div>
+      <div class="kerning-stage" id="stage"></div>
 
       <div class="controls-panel">
         <button class="btn btn-secondary" onclick="moveLetter(-2)">◀ Move Left</button>
@@ -308,7 +303,7 @@
         <button class="btn btn-secondary" onclick="nextWord()">Next Word ➔</button>
       </div>
 
-      <div style="margin-top: 24px;" id="scoreOutput" style="display: none;">
+      <div style="margin-top: 24px; display: none;" id="scoreOutput">
         <span class="score-badge" id="scoreValue">🎯 Score: -- / 100</span>
       </div>
     </section>
@@ -349,35 +344,79 @@
   </footer>
 
   <script>
-    let currentOffset1 = 35;
-    let currentOffset2 = 15;
-    const targetOffset1 = 0;
-    const targetOffset2 = 0;
+    const WORDS = [
+      { text: 'WAVE',  target: -14 },
+      { text: 'AVOID', target: 6 },
+      { text: 'WOW',   target: 18 },
+      { text: 'VAT',   target: -8 },
+      { text: 'LAVA',  target: 10 },
+      { text: 'AYE',   target: -18 },
+      { text: 'TAVO',  target: 4 },
+      { text: 'WOE',   target: -6 }
+    ];
 
-    const letter1 = document.getElementById('movableLetter1');
-    const letter2 = document.getElementById('movableLetter2');
+    const stage = document.getElementById('stage');
     const scoreOutput = document.getElementById('scoreOutput');
     const scoreValue = document.getElementById('scoreValue');
 
+    let currentWord = null;
+    let currentOffset = 0;
+    let movableEl = null;
+
+    function loadWord(index) {
+      currentWord = WORDS[index];
+      currentOffset = 0;
+      stage.innerHTML = '';
+      scoreOutput.style.display = 'none';
+
+      currentWord.text.split('').forEach((ch, i) => {
+        const span = document.createElement('span');
+        span.className = 'letter' + (i === 1 ? ' movable' : ' fixed');
+        span.textContent = ch;
+        if (i === 1) {
+          movableEl = span;
+          span.style.transform = 'translateX(0px)';
+          attachDrag(span);
+        }
+        stage.appendChild(span);
+      });
+    }
+
     function moveLetter(delta) {
-      currentOffset1 += delta;
-      letter1.style.transform = `translateX(${currentOffset1}px)`;
+      currentOffset += delta;
+      if (movableEl) movableEl.style.transform = `translateX(${currentOffset}px)`;
     }
 
     document.addEventListener('keydown', (e) => {
-      if (e.key === 'ArrowLeft') moveLetter(-2);
-      if (e.key === 'ArrowRight') moveLetter(2);
+      if (e.key === 'ArrowLeft') { e.preventDefault(); moveLetter(e.shiftKey ? -1 : -2); }
+      if (e.key === 'ArrowRight') { e.preventDefault(); moveLetter(e.shiftKey ? 1 : 2); }
     });
 
-    function calculateScore() {
-      const diff1 = Math.abs(currentOffset1 - targetOffset1);
-      const diff2 = Math.abs(currentOffset2 - targetOffset2);
-      const penalty = (diff1 + diff2) * 2;
-      const score = Math.max(0, Math.min(100, Math.round(100 - penalty)));
+    function attachDrag(el) {
+      let dragging = false;
+      let startX = 0;
+      let startOffset = 0;
+      el.addEventListener('pointerdown', (e) => {
+        dragging = true;
+        startX = e.clientX;
+        startOffset = currentOffset;
+        el.setPointerCapture(e.pointerId);
+      });
+      el.addEventListener('pointermove', (e) => {
+        if (!dragging) return;
+        currentOffset = startOffset + (e.clientX - startX);
+        el.style.transform = `translateX(${currentOffset}px)`;
+      });
+      el.addEventListener('pointerup', () => { dragging = false; });
+      el.addEventListener('pointercancel', () => { dragging = false; });
+    }
 
+    function calculateScore() {
+      if (!currentWord) return;
+      const diff = Math.abs(currentOffset - currentWord.target);
+      const score = Math.max(0, Math.min(100, Math.round(100 - diff * 3)));
       scoreOutput.style.display = 'block';
       scoreValue.textContent = `🎯 Kerning Score: ${score} / 100`;
-
       if (score >= 90) {
         scoreValue.style.color = '#34d399';
         scoreValue.textContent += ' (Exceptional Eye! 🔥)';
@@ -386,13 +425,19 @@
         scoreValue.textContent += ' (Good effort! 👍)';
       } else {
         scoreValue.style.color = '#f87171';
-        scoreValue.textContent += ' (Keep tuning!)';
+        scoreValue.textContent += ' (Keep tuning! Hold Shift for fine adjust.)';
       }
     }
 
+    let lastIndex = -1;
     function nextWord() {
-      alert('Well done! You can load more words or check out our DesignKit presets.');
+      let i;
+      do { i = Math.floor(Math.random() * WORDS.length); } while (i === lastIndex && WORDS.length > 1);
+      lastIndex = i;
+      loadWord(i);
     }
+
+    loadWord(0);
   </script>
 </body>
 </html>
